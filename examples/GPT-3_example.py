@@ -2,7 +2,7 @@ import json
 import openai
 import math
 
-openai.api_key = "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"
+openai.api_key = "YOUR API KEY GOES HERE"
 
 class Tree:
     def __init__(self, token, probability, depth=1):
@@ -18,11 +18,11 @@ class Tree:
         return f"Tree({self.val}, {self.probability}): {self.nodes}"
 
 
-a = Tree('The', 1)
+a = Tree('The', 100)
 # Display the tree
 
 def display_tree(node, level=0):
-    print('\t' * level + repr(node.val))
+    print('\t' * level + (node.val + " - " + str(round(node.probability, 2)) + "%"))
     for child in node.nodes:
         display_tree(child, level + 1)
 
@@ -50,7 +50,6 @@ def tree_last_layer_add(node, prompt = ''):
     prompt = f"{prompt}{node.val}"
     depth = len(prompt.split())
     if node.nodes == [] and depth == a.depth:
-        print(prompt)
         to_add = return_token_and_probability(prompt)
         highest_probability = max([element[1] for element in to_add]) if to_add else 0
         for tup in to_add:
@@ -64,7 +63,7 @@ def tree_generate_n_layers(max_layers):
     for i in range(max_layers):
         tree_last_layer_add(a)
         a.depth+=1
-def tree_save_as_json(tree, filename='grammar.json'):
+def tree_save_as_json(tree, filename=('sentence_tree' + str(a.depth) + ".json")):
     with open(filename, 'w') as f:
         json.dump(to_dict(tree), f)
 
@@ -74,6 +73,6 @@ def to_dict(tree):
     else:
         return {"val": tree.val, "probability": tree.probability}
 
-tree_generate_n_layers(2)
+tree_generate_n_layers(3)
 display_tree(a)
 tree_save_as_json(a)
