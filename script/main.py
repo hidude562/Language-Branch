@@ -46,7 +46,7 @@ def tree_generate_n_layers(max_layers):
     for i in range(max_layers):
         tree_last_layer_add(a)
         a.depth+=1
-def tree_save_as_json(tree, filename='grammar.json'):
+def tree_save_as_json(tree, filename=('sentence_tree' + str(a.depth) + ".json")):
     with open(filename, 'w') as f:
         json.dump(to_dict(tree), f)
 
